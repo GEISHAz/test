@@ -9,7 +9,15 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/GEISHAz/test.git'
             }
         }
-        stage('build') {
+        stage('Gradle build') {
+                steps {
+                    dir('./testserver') {
+                            sh 'chmod +x ./gradlew'
+        					sh './gradlew clean build'
+                        }
+                    }
+                }
+        stage('Container build') {
             steps {
                 dir("./testserver") {
                     sh 'docker stop backend || true && docker rm backend || true'
